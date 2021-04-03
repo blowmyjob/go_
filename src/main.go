@@ -1,7 +1,10 @@
 package main
 
-import "learnDemo/src/config"
+import "learnDemo/src/kafka"
 
 func main() {
-	config.ReadConfig()
+	kafka.InitProducer("120.79.223.58:9092")
+	for {
+		kafka.Send("test1", "haha")
+	}
 }
