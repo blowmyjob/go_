@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package micro.protobuf;
+
+message  OrderReq {
+  uint64 id  = 1;   // 订单id
+}
+
+message  OrderResp {
+  uint64 order = 1;             // 订单id
+  string orderName = 2;         // 订单说明
+  uint64 time = 3;              // 开始时间戳，秒单位
+}
+
+service OrderService{
+  rpc GetOrderDetail(OrderReq) returns (OrderResp);
+}
