@@ -12,7 +12,7 @@ import (
 func Job() {
 	exec := xxl.NewExecutor(
 		xxl.ServerAddr("http://120.79.223.58:8010/xxl-job-admin"),
-		xxl.AccessToken("Dgut240938"),
+		xxl.AccessToken(""),
 		xxl.RegistryKey("xxl-job-executor-sample"), //执行器名称
 		xxl.SetLogger(&logger{}),                   //自定义日志
 	)

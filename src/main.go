@@ -1,10 +1,15 @@
 package main
 
-import "learnDemo/src/kafka"
+import (
+	"learnDemo/src/channel"
+	"time"
+)
 
 func main() {
-	kafka.InitProducer("120.79.223.58:9092")
-	for {
-		kafka.Send("test1", "haha")
-	}
+	ch := make(chan int, 64)
+	go channel.ProducerFunc(1, ch)
+	go channel.ProducerFunc(2, ch)
+
+	go channel.ConsumerFunc(ch)
+	time.Sleep(5 * time.Second)
 }
