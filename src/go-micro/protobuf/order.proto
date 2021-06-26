@@ -3,7 +3,7 @@ syntax = "proto3";
 package micro.protobuf;
 
 message  OrderReq {
-  uint64 id  = 1;   // 订单id
+  uint64 id = 1;   // 订单id
 }
 
 message  OrderResp {
@@ -12,6 +12,17 @@ message  OrderResp {
   uint64 time = 3;              // 开始时间戳，秒单位
 }
 
+message CreateOrderReq{
+  string orderName = 1;         // 订单说明
+  uint64 time = 2;              // 开始时间戳，秒单位
+}
+
+message CreateOrderResp{
+  uint64 id = 1;//订单id
+}
+
 service OrderService{
   rpc GetOrderDetail(OrderReq) returns (OrderResp);
+
+  rpc CreateOrderDetail(CreateOrderReq) returns (CreateOrderResp);
 }
