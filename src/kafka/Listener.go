@@ -5,7 +5,7 @@ import (
 	"github.com/Shopify/sarama"
 )
 
-func ConsumerTest() {
+func ConsumerTest(topic string, host []string) {
 	fmt.Printf("consumer_test")
 
 	config := sarama.NewConfig()
@@ -13,7 +13,7 @@ func ConsumerTest() {
 	config.Version = sarama.V0_11_0_2
 
 	// consumer
-	consumer, err := sarama.NewConsumer([]string{"120.79.223.58:9092"}, config)
+	consumer, err := sarama.NewConsumer(host, config)
 	if err != nil {
 		fmt.Printf("consumer_test create consumer error %s\n", err.Error())
 		return
@@ -21,7 +21,7 @@ func ConsumerTest() {
 
 	defer consumer.Close()
 
-	partition_consumer, err := consumer.ConsumePartition("test1", 0, sarama.OffsetOldest)
+	partition_consumer, err := consumer.ConsumePartition(topic, 0, sarama.OffsetOldest)
 	if err != nil {
 		fmt.Printf("try create partition_consumer error %s\n", err.Error())
 		return

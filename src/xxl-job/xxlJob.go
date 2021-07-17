@@ -6,6 +6,7 @@ import (
 	xxl_job_executor_gin "github.com/gin-middleware/xxl-job-executor"
 	"github.com/xxl-job/xxl-job-executor-go"
 	"golang.org/x/net/context"
+	"learnDemo/src/kafka"
 	"log"
 )
 
@@ -16,6 +17,7 @@ func Job() {
 		xxl.RegistryKey("xxl-job-executor-sample"), //执行器名称
 		xxl.SetLogger(&logger{}),                   //自定义日志
 	)
+	kafka.InitProducer("120.79.223.58:8080")
 	exec.Init()
 
 	//设置日志查看handler
@@ -38,7 +40,8 @@ func Job() {
 	})
 
 	//注册任务handler
-	exec.RegTask("Task_Test", Task_Test)
+	exec.RegTask("Task_Test", TaskTest)
+	exec.RegTask("Task_Consume", TaskConsume)
 	log.Fatal(r.Run(":9999"))
 }
 
@@ -53,7 +56,15 @@ func (l *logger) Error(format string, a ...interface{}) {
 	log.Println(fmt.Sprintf("自定义日志 - "+format, a...))
 }
 
-func Task_Test(cxt context.Context, param *xxl.RunReq) (msg string) {
+func TaskTest(cxt context.Context, param *xxl.RunReq) (msg string) {
+	kafka.Send("test_topic", "1")
 	fmt.Println("test one task" + param.ExecutorHandler + " param：" + param.ExecutorParams + " log_id:" + xxl.Int64ToStr(param.LogID))
 	return "test done"
+}
+
+func TaskConsume(cxt context.Context, param *xxl.RunReq) (msg string) {
+	topic := ""
+	host := []string{}
+	kafka.ConsumerTest(topic, host)
+	return "ok"
 }
